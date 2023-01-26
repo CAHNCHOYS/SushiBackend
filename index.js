@@ -17,6 +17,10 @@ app.get("/", (req, res) => {
   res.send("WE ARE ON HOME PAGE");
 });
 
+app.get('/api/w',(req, res)=>{
+   res.json({done: true});
+})
+
 app.listen(PORT, () => {
   console.log("Server is running on Port: " + PORT + "...");
 });
