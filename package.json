@@ -1,0 +1,24 @@
+{
+  "name": "sushibackend",
+  "version": "1.0.0",
+  "description": "Backend for FoodApp",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "serve": "nodemon"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "type": "module",
+  "author": "Alexey",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql2": "^3.0.1",
+    "nodemon": "^2.0.20"
+  }
+}
