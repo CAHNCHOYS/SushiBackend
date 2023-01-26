@@ -1,5 +1,6 @@
 import express, { json } from "express";
 import cors from "cors";
+import path from 'path';
 
 import router from "./Routes/routes.js";
 
@@ -12,6 +13,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(json());
 app.use(router);
+const __dirname = path.resolve();
+
+
+
+app.use(express.static(path.resolve(__dirname, 'Images')));
+
 
 
 
