@@ -1,7 +1,7 @@
 import { json, Router } from "express";
 import connection from "../Database/connection.js";
 import jwt from "jsonwebtoken";
-import cors from "cors";
+
 const JWT_KEY = "SUSHIAPP";
 const router = Router();
 
@@ -13,12 +13,13 @@ router.get("/users", (req, res) => {
   });
 });
 
+
 //Регистрация
-router.post("/register", cors(), (req, res) => {
+router.post("/register",  (req, res) => {
   console.log(req.body);
   const { name, email, password, city } = req.body;
-
- 
+  
+  
   connection.query(
     `SELECT email FROM users WHERE email = '${email}'`,
     (err, results) => {
@@ -43,7 +44,8 @@ router.post("/register", cors(), (req, res) => {
 });
 
 //Логин
-router.post("/login", cors(), (req, res) => {
+router.post("/login", (req, res) => {
+ 
   const { email, password } = req.body;
   connection.query(
     `SELECT email,  city, name from users WHERE email = '${email}' AND password = '${password}'`,
@@ -92,6 +94,8 @@ router.post("/verify", (req, res) => {
     if (decode.exp < dateNow.getTime() / 1000) {
       isExpiredToken = true;
     }
+
+   
 
     if (!isExpiredToken) {
       res.json({
