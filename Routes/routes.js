@@ -15,7 +15,7 @@ router.get("/users", (req, res) => {
 
 
 //Регистрация
-router.post("/register",  (req, res) => {
+router.post("/api/register",  (req, res) => {
   console.log(req.body);
   const { name, email, password, city } = req.body;
   
@@ -44,7 +44,7 @@ router.post("/register",  (req, res) => {
 });
 
 //Логин
-router.post("/login", (req, res) => {
+router.post("/api/login", (req, res) => {
  
   const { email, password } = req.body;
   connection.query(
@@ -78,7 +78,7 @@ router.post("/login", (req, res) => {
   );
 });
 
-router.post("/verify", (req, res) => {
+router.post("/api/verify", (req, res) => {
   console.log("VEREFIEND");
   console.log(req.body);
 
