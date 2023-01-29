@@ -1,7 +1,7 @@
 import { json, Router } from "express";
 import connection from "../Database/connection.js";
 import jwt from "jsonwebtoken";
-
+import cors from "cors";
 const JWT_KEY = "SUSHIAPP";
 const router = Router();
 
@@ -13,16 +13,18 @@ router.get("/users", (req, res) => {
   });
 });
 
-
 //Регистрация
-router.post("/register", (req, res) => {
+router.post("/register", cors(), (req, res) => {
   console.log(req.body);
   const { name, email, password, city } = req.body;
-  
+
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+  );
   connection.query(
     `SELECT email FROM users WHERE email = '${email}'`,
     (err, results) => {
@@ -47,8 +49,7 @@ router.post("/register", (req, res) => {
 });
 
 //Логин
-router.post("/login", (req, res) => {
- 
+router.post("/login", cors(), (req, res) => {
   const { email, password } = req.body;
   connection.query(
     `SELECT email,  city, name from users WHERE email = '${email}' AND password = '${password}'`,
@@ -97,8 +98,6 @@ router.post("/verify", (req, res) => {
     if (decode.exp < dateNow.getTime() / 1000) {
       isExpiredToken = true;
     }
-
-   
 
     if (!isExpiredToken) {
       res.json({
