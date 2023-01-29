@@ -18,6 +18,9 @@ const __dirname = path.resolve();
 
 app.use(express.static(path.resolve(__dirname, "Images")));
 
+
+
+
 app.get("/", (req, res) => {
   console.log("HOEM");
   res.send("WE ARE ON HOME PAGE");
@@ -26,6 +29,8 @@ app.get("/", (req, res) => {
 app.get("/api/w", (req, res) => {
   res.json({ done: true });
 });
+
+
 
 app.listen(PORT, () => {
   console.log("Server is running on Port: " + PORT + "...");

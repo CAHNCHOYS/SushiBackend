@@ -13,7 +13,6 @@ router.get("/users", (req, res) => {
   });
 });
 
-
 //Регистрация
 router.post("/api/register",  (req, res) => {
   console.log(req.body);
