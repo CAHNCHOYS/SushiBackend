@@ -18,13 +18,7 @@ router.post("/register", cors(), (req, res) => {
   console.log(req.body);
   const { name, email, password, city } = req.body;
 
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
-  );
+ 
   connection.query(
     `SELECT email FROM users WHERE email = '${email}'`,
     (err, results) => {
