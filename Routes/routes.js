@@ -1,6 +1,12 @@
 import { json, Router } from "express";
 import connection from "../Database/connection.js";
+
 import jwt from "jsonwebtoken";
+
+//Controllers
+import { getProductsByType } from "../Controllers/getProductsByType.js";
+
+//------------------------
 
 const JWT_KEY = "SUSHIAPP";
 const router = Router();
@@ -14,17 +20,16 @@ router.get("/users", (req, res) => {
 });
 
 //Регистрация
-router.post("/api/register",  (req, res) => {
+router.post("/api/register", (req, res) => {
   console.log(req.body);
-  const { name, email, password, city } = req.body;
-  
-  
+  const { name, email, password, city, phone } = req.body;
+
   connection.query(
     `SELECT email FROM users WHERE email = '${email}'`,
     (err, results) => {
       if (!err && !results.length) {
         connection.query(
-          `INSERT INTO users (id, name, email, password, city) VALUES (NULL, '${name}', '${email}', '${password}','${city}')`,
+          `INSERT INTO users (id, name, email, password, city, phone) VALUES (NULL, '${name}', '${email}', '${password}','${city}', ${phone})`,
           (err, results) => {
             if (err) {
               console.log(err);
@@ -44,10 +49,9 @@ router.post("/api/register",  (req, res) => {
 
 //Логин
 router.post("/api/login", (req, res) => {
- 
   const { email, password } = req.body;
   connection.query(
-    `SELECT email,  city, name from users WHERE email = '${email}' AND password = '${password}'`,
+    `SELECT email,  city, name, phone from users WHERE email = '${email}' AND password = '${password}'`,
     (err, results) => {
       if (!err) {
         if (results.length > 0) {
@@ -59,9 +63,10 @@ router.post("/api/login", (req, res) => {
               email: user.email,
               city: user.city,
               name: user.name,
+              phone: user.phone,
             },
             JWT_KEY,
-            { expiresIn: "1h" }
+            { expiresIn: "2h" }
           );
 
           res.json({ user, token });
@@ -94,12 +99,10 @@ router.post("/api/verify", (req, res) => {
       isExpiredToken = true;
     }
 
-   
-
     if (!isExpiredToken) {
       res.json({
         isValidToken: true,
-        user: { email: decode.email, city: decode.city, name: decode.name },
+        user: { email: decode.email, city: decode.city, name: decode.name, phone: decode.phone },
       });
     } else {
       res.json({ isExpiredToken: true });
@@ -108,5 +111,9 @@ router.post("/api/verify", (req, res) => {
     console.log(error);
   }
 });
+
+router.get("/api/productsByType/:type", getProductsByType);
+
+
 
 export default router;
