@@ -1,4 +1,4 @@
-import { json, Router } from "express";
+import { Router } from "express";
 import connection from "../Database/connection.js";
 
 import jwt from "jsonwebtoken";
@@ -27,7 +27,6 @@ router.post("/api/register", (req, res) => {
   console.log(req.body);
   const { name, email, password, city, phone } = req.body;
 
-  const arr = [];
   connection.query(
     `SELECT email FROM users WHERE email = '${email}'`,
     (err, results) => {
@@ -115,13 +114,10 @@ router.post("/api/verify", (req, res) => {
 router.get("/api/productsByType/:type", getProductsByType);
 router.get("/api/products/:id", getSingleProduct);
 
-
 router.post("/api/cartProducts", addCartProduct);
 
 router.get("/api/cartProducts/:id", getUserCartProducts);
 
-router.delete("/api/cartProducts",deleteCartProduct)
-
-
+router.delete("/api/cartProducts", deleteCartProduct);
 
 export default router;
