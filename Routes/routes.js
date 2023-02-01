@@ -23,12 +23,12 @@ router.get("/users", (req, res) => {
 });
 
 //Регистрация
-router.post("/api/register", async (req, res) => {
+router.post("/api/register", (req, res) => {
   console.log(req.body);
   const { name, email, password, city, phone } = req.body;
 
   const arr = [];
-  await connection.query(
+  connection.query(
     `SELECT email FROM users WHERE email = '${email}'`,
     (err, results) => {
       if (!err && !results.length) {
@@ -52,9 +52,9 @@ router.post("/api/register", async (req, res) => {
 });
 
 //Логин
-router.post("/api/login", async (req, res) => {
+router.post("/api/login", (req, res) => {
   const { email, password } = req.body;
-  await connection.query(
+  connection.query(
     `SELECT id, email,  city, name, phone from users WHERE email = '${email}' AND password = '${password}'`,
     (err, results) => {
       if (!err) {
@@ -83,7 +83,7 @@ router.post("/api/login", async (req, res) => {
   );
 });
 
-router.post("/api/verify", async (req, res) => {
+router.post("/api/verify", (req, res) => {
   const { token } = req.body;
   try {
     const decode = jwt.decode(token, JWT_KEY);
@@ -115,10 +115,13 @@ router.post("/api/verify", async (req, res) => {
 router.get("/api/productsByType/:type", getProductsByType);
 router.get("/api/products/:id", getSingleProduct);
 
+
 router.post("/api/cartProducts", addCartProduct);
 
 router.get("/api/cartProducts/:id", getUserCartProducts);
 
-router.delete("/api/cartProducts", deleteCartProduct);
+router.delete("/api/cartProducts",deleteCartProduct)
+
+
 
 export default router;
