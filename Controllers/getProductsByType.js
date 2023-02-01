@@ -20,4 +20,6 @@ export const getProductsByType = (req, res) => {
       }
     }
   );
+
+  
 };
