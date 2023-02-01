@@ -5,7 +5,10 @@ import jwt from "jsonwebtoken";
 
 //Controllers
 import { getProductsByType } from "../Controllers/getProductsByType.js";
-
+import { getSingleProduct } from "../Controllers/getSingleProduct.js";
+import { addCartProduct } from "../Controllers/addCartProduct.js";
+import { getUserCartProducts } from "../Controllers/getUserCartProducts.js";
+import { deleteCartProduct } from "../Controllers/deleteCartProduct.js";
 //------------------------
 
 const JWT_KEY = "SUSHIAPP";
@@ -24,12 +27,13 @@ router.post("/api/register", (req, res) => {
   console.log(req.body);
   const { name, email, password, city, phone } = req.body;
 
+  const arr = [];
   connection.query(
     `SELECT email FROM users WHERE email = '${email}'`,
     (err, results) => {
       if (!err && !results.length) {
         connection.query(
-          `INSERT INTO users (id, name, email, password, city, phone) VALUES (NULL, '${name}', '${email}', '${password}','${city}', ${phone})`,
+          `INSERT INTO users (id, name, email, password, city, phone) VALUES (NULL, '${name}', '${email}', '${password}','${city}', '${phone}')`,
           (err, results) => {
             if (err) {
               console.log(err);
@@ -51,7 +55,7 @@ router.post("/api/register", (req, res) => {
 router.post("/api/login", (req, res) => {
   const { email, password } = req.body;
   connection.query(
-    `SELECT email,  city, name, phone from users WHERE email = '${email}' AND password = '${password}'`,
+    `SELECT id, email,  city, name, phone from users WHERE email = '${email}' AND password = '${password}'`,
     (err, results) => {
       if (!err) {
         if (results.length > 0) {
@@ -60,10 +64,7 @@ router.post("/api/login", (req, res) => {
 
           const token = jwt.sign(
             {
-              email: user.email,
-              city: user.city,
-              name: user.name,
-              phone: user.phone,
+              ...user,
             },
             JWT_KEY,
             { expiresIn: "2h" }
@@ -82,12 +83,7 @@ router.post("/api/login", (req, res) => {
   );
 });
 
-let i = 5;
-
 router.post("/api/verify", (req, res) => {
-  console.log("VEREFIEND");
-  console.log(req.body);
-
   const { token } = req.body;
   try {
     const decode = jwt.decode(token, JWT_KEY);
@@ -104,7 +100,9 @@ router.post("/api/verify", (req, res) => {
     if (!isExpiredToken) {
       res.json({
         isValidToken: true,
-        user: { email: decode.email, city: decode.city, name: decode.name, phone: decode.phone },
+        user: {
+          ...decode,
+        },
       });
     } else {
       res.json({ isExpiredToken: true });
@@ -115,6 +113,14 @@ router.post("/api/verify", (req, res) => {
 });
 
 router.get("/api/productsByType/:type", getProductsByType);
+router.get("/api/products/:id", getSingleProduct);
+
+
+router.post("/api/cartProducts", addCartProduct);
+
+router.get("/api/cartProducts/:id", getUserCartProducts);
+
+router.delete("/api/cartProducts",deleteCartProduct)
 
 
 
