@@ -1,4 +1,4 @@
-import { Router } from "express";
+import {  Router } from "express";
 import connection from "../Database/connection.js";
 
 import jwt from "jsonwebtoken";
@@ -27,72 +27,59 @@ router.post("/api/register", (req, res) => {
   console.log(req.body);
   const { name, email, password, city, phone } = req.body;
 
-  connection.connect((err) => {
-    if (!err) {
-      connection.query(
-        `SELECT email FROM users WHERE email = '${email}'`,
-        (err, results) => {
-          if (!err && !results.length) {
-            connection.query(
-              `INSERT INTO users (id, name, email, password, city, phone) VALUES (NULL, '${name}', '${email}', '${password}','${city}', '${phone}')`,
-              (err, results) => {
-                if (err) {
-                  console.log(err);
-                  res.status(400).json({ isErr: true });
-                } else res.status(200).json({ isSuccess: true });
-              }
-            );
-          } else if (!err && results.length) {
-            res.status(409).json({ isSameUser: true });
-          } else if (err) {
-            console.log(err);
-            res.status(400).json({ isErr: true });
+  connection.query(
+    `SELECT email FROM users WHERE email = '${email}'`,
+    (err, results) => {
+      if (!err && !results.length) {
+        connection.query(
+          `INSERT INTO users (id, name, email, password, city, phone) VALUES (NULL, '${name}', '${email}', '${password}','${city}', '${phone}')`,
+          (err, results) => {
+            if (err) {
+              console.log(err);
+              res.status(400).json({ isErr: true });
+            } else res.status(200).json({ isSuccess: true });
           }
-        }
-      );
+        );
+      } else if (!err && results.length) {
+        res.status(409).json({ isSameUser: true });
+      } else if (err) {
+        console.log(err);
+        res.status(400).json({ isErr: true });
+      }
     }
-  });
-
-  connection.end();
+  );
 });
 
 //Логин
 router.post("/api/login", (req, res) => {
   const { email, password } = req.body;
+  connection.query(
+    `SELECT id, email,  city, name, phone from users WHERE email = '${email}' AND password = '${password}'`,
+    (err, results) => {
+      if (!err) {
+        if (results.length > 0) {
+          const user = results[0];
+          console.log(user);
 
-  connection.connect((err) => {
-    if (!err) {
-      connection.query(
-        `SELECT id, email,  city, name, phone from users WHERE email = '${email}' AND password = '${password}'`,
-        (err, results) => {
-          if (!err) {
-            if (results.length > 0) {
-              const user = results[0];
-              console.log(user);
+          const token = jwt.sign(
+            {
+              ...user,
+            },
+            JWT_KEY,
+            { expiresIn: "2h" }
+          );
 
-              const token = jwt.sign(
-                {
-                  ...user,
-                },
-                JWT_KEY,
-                { expiresIn: "2h" }
-              );
-
-              res.json({ user, token });
-            } else {
-              console.log("no user found");
-              res.status(409).json({ noSuchUser: true });
-            }
-          } else {
-            console.log(err);
-            res.json({ isErr: true });
-          }
+          res.json({ user, token });
+        } else {
+          console.log("no user found");
+          res.status(409).json({ noSuchUser: true });
         }
-      );
+      } else {
+        console.log(err);
+        res.json({ isErr: true });
+      }
     }
-  });
-
-  connection.end();
+  );
 });
 
 router.post("/api/verify", (req, res) => {
@@ -127,10 +114,13 @@ router.post("/api/verify", (req, res) => {
 router.get("/api/productsByType/:type", getProductsByType);
 router.get("/api/products/:id", getSingleProduct);
 
+
 router.post("/api/cartProducts", addCartProduct);
 
 router.get("/api/cartProducts/:id", getUserCartProducts);
 
-router.delete("/api/cartProducts", deleteCartProduct);
+router.delete("/api/cartProducts",deleteCartProduct)
+
+
 
 export default router;

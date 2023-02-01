@@ -6,25 +6,21 @@ dotenv.config();
 
 
 
-const connection = mysql.createConnection({
+const connection = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 100,
+
   
   
 });
 
 
 
-  
 
-connection.connect((err) => {
-  if (err) {
-    console.log(err, "connection failed");
-  } else console.log("connection successful");
-});
 
-connection.end();
 
 export default connection;
