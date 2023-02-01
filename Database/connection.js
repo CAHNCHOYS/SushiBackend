@@ -25,4 +25,6 @@ connection.connect((err) => {
   } else console.log("connection successful");
 });
 
+connection.end();
+
 export default connection;
