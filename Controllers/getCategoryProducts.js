@@ -1,15 +1,12 @@
 import connection from "../Database/connection.js";
 
-export const getProductsByType = (req, res) => {
-  
-
-  const type = req.params.type;
+export const getCategoryProducts = (req, res) => {
+  const category = req.params.category;
+  console.log(category);
   connection.query(
-    `SELECT product_id, products.name, products.Price,  products.image, products.textSize, oldPrice, categories.id as category_id FROM
+    `SELECT product_id, products.name, products.Price,  products.image, products.textSize, products.numberSize, oldPrice, categories.id as category_id FROM
       products INNER JOIN categories ON products.category_id = categories.id
-      WHERE ${type} != 0
-      
-    
+     WHERE categories.category_name = '${category}'
     `,
     (err, results) => {
       if (!err) {
@@ -20,6 +17,4 @@ export const getProductsByType = (req, res) => {
       }
     }
   );
-
-  
 };

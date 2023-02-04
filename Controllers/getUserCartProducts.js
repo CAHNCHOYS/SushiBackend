@@ -10,7 +10,7 @@ export const getUserCartProducts = (req, res) => {
         res.json(results);
       } else {
 
-        res.status(500).json({ isErr: true });
+        res.status(500).json({ err });
       }
     }
   );

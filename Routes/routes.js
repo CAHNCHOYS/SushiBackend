@@ -1,4 +1,4 @@
-import {  Router } from "express";
+import { Router } from "express";
 import connection from "../Database/connection.js";
 
 import jwt from "jsonwebtoken";
@@ -9,6 +9,10 @@ import { getSingleProduct } from "../Controllers/getSingleProduct.js";
 import { addCartProduct } from "../Controllers/addCartProduct.js";
 import { getUserCartProducts } from "../Controllers/getUserCartProducts.js";
 import { deleteCartProduct } from "../Controllers/deleteCartProduct.js";
+import { getCategoryProducts } from "../Controllers/getCategoryProducts.js";
+import { getAllReviews } from "../Controllers/getAllReviews.js";
+import { addUserReview } from "../Controllers/addUserReview.js";
+
 //------------------------
 
 const JWT_KEY = "SUSHIAPP";
@@ -36,7 +40,7 @@ router.post("/api/register", (req, res) => {
           (err, results) => {
             if (err) {
               console.log(err);
-              res.status(400).json({ isErr: true });
+              res.status(500).json({ err });
             } else res.status(200).json({ isSuccess: true });
           }
         );
@@ -44,7 +48,7 @@ router.post("/api/register", (req, res) => {
         res.status(409).json({ isSameUser: true });
       } else if (err) {
         console.log(err);
-        res.status(400).json({ isErr: true });
+        res.status(500).json({ err });
       }
     }
   );
@@ -76,7 +80,7 @@ router.post("/api/login", (req, res) => {
         }
       } else {
         console.log(err);
-        res.json({ isErr: true });
+        res.json({ err });
       }
     }
   );
@@ -108,19 +112,19 @@ router.post("/api/verify", (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.json({ isExpiredToken: true });
   }
 });
 
 router.get("/api/productsByType/:type", getProductsByType);
-router.get("/api/products/:id", getSingleProduct);
-
+router.get("/api/products/:name/:id", getSingleProduct);
+router.get("/api/categories/:category", getCategoryProducts);
+router.get("/api/cartProducts/:id", getUserCartProducts);
+router.get("/api/reviews", getAllReviews);
 
 router.post("/api/cartProducts", addCartProduct);
+router.post("/api/reviews", addUserReview);
 
-router.get("/api/cartProducts/:id", getUserCartProducts);
-
-router.delete("/api/cartProducts",deleteCartProduct)
-
-
+router.delete("/api/cartProducts", deleteCartProduct);
 
 export default router;
