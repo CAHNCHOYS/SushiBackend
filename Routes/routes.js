@@ -12,6 +12,9 @@ import { deleteCartProduct } from "../Controllers/deleteCartProduct.js";
 import { getCategoryProducts } from "../Controllers/getCategoryProducts.js";
 import { getAllReviews } from "../Controllers/getAllReviews.js";
 import { addUserReview } from "../Controllers/addUserReview.js";
+import { commitOrder } from "../Controllers/commitOrder.js";
+
+import { updateUserData } from "../Controllers/updateUserData.js";
 
 //------------------------
 
@@ -57,14 +60,15 @@ router.post("/api/register", (req, res) => {
 //Логин
 router.post("/api/login", (req, res) => {
   const { email, password } = req.body;
+  console.log(email, password);
   connection.query(
-    `SELECT id, email,  city, name, phone from users WHERE email = '${email}' AND password = '${password}'`,
+    `SELECT id, email,  city, name, phone, password from users WHERE email = '${email}' AND password = '${password}'`,
     (err, results) => {
       if (!err) {
         if (results.length > 0) {
           const user = results[0];
           console.log(user);
-
+           
           const token = jwt.sign(
             {
               ...user,
@@ -124,6 +128,9 @@ router.get("/api/reviews", getAllReviews);
 
 router.post("/api/cartProducts", addCartProduct);
 router.post("/api/reviews", addUserReview);
+
+router.patch("/api/order", commitOrder);
+router.patch("/api/users", updateUserData);
 
 router.delete("/api/cartProducts", deleteCartProduct);
 

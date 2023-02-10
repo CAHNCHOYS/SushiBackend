@@ -18,3 +18,5 @@ export const getCategoryProducts = (req, res) => {
     }
   );
 };
+
+
