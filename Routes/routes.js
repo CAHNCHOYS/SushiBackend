@@ -13,6 +13,7 @@ import { getCategoryProducts } from "../Controllers/getCategoryProducts.js";
 import { getAllReviews } from "../Controllers/getAllReviews.js";
 import { addUserReview } from "../Controllers/addUserReview.js";
 import { commitOrder } from "../Controllers/commitOrder.js";
+import { searchProduct } from "../Controllers/searchProduct.js";
 
 import { updateUserData } from "../Controllers/updateUserData.js";
 
@@ -122,9 +123,13 @@ router.post("/api/verify", (req, res) => {
 
 router.get("/api/productsByType/:type", getProductsByType);
 router.get("/api/products/:name/:id", getSingleProduct);
-router.get("/api/categories/:category", getCategoryProducts);
+router.get("/api/categories/:category/:limit", getCategoryProducts);
 router.get("/api/cartProducts/:id", getUserCartProducts);
 router.get("/api/reviews", getAllReviews);
+router.get("/api/searchProduct/:categories/:name", searchProduct);
+
+
+
 
 router.post("/api/cartProducts", addCartProduct);
 router.post("/api/reviews", addUserReview);

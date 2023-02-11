@@ -2,6 +2,7 @@ import connection from "../Database/connection.js";
 
 export const addCartProduct = (req, res) => {
   const { product_id, user_id, count } = req.body;
+  console.log(req.body);
 
   connection.query(
     `SELECT products.product_id, products.name, products.image FROM ((cartproducts INNER JOIN products ON cartproducts.product_id = products.product_id)

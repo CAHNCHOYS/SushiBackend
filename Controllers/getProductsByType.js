@@ -7,7 +7,7 @@ export const getProductsByType = (req, res) => {
   connection.query(
     `SELECT product_id, products.name, products.Price,  products.image, products.textSize, oldPrice, categories.id as category_id FROM
       products INNER JOIN categories ON products.category_id = categories.id
-      WHERE ${type} != 0
+      WHERE ${type} != 0 LIMIT 10
       
     
     `,

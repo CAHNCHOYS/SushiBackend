@@ -5,7 +5,7 @@ export const getSingleProduct = (req, res) => {
   connection.query(
     `SELECT product_id, products.name, products.Price, isNew, isSale, products.image, products.textSize, oldPrice, categories.id as category_id, consists, recommendedCat FROM
      products INNER JOIN categories ON products.category_id = categories.id
-     WHERE product_id = ${req.params.id} AND products.name = '${req.params.name}'
+     WHERE product_id = ${+req.params.id} AND products.name = '${req.params.name}'
    
    `,
     (err, results) => {
