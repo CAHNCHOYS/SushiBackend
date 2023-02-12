@@ -12,19 +12,15 @@ export const addCartProduct = (req, res) => {
         console.log(results);
         if (results.length > 0) {
           res.json({ isSameProduct: true });
-          connection.end();
         } else {
-
           connection.query(
             `INSERT INTO cartproducts (product_id, user_id, count) VALUES (${product_id},${user_id},${count})`,
             (err, results) => {
               if (!err) {
                 res.json({ isAdded: true });
-                connection.end();
               } else {
                 console.log(err);
                 res.status(500).json({ err });
-                connection.end();
               }
             }
           );
@@ -32,7 +28,6 @@ export const addCartProduct = (req, res) => {
       } else {
         console.log(err);
         res.status(500).json({ err });
-        connection.end();
       }
     }
   );

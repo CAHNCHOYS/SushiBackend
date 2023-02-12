@@ -7,10 +7,9 @@ export const getUserCartProducts = (req, res) => {
   INNER JOIN users ON cartproducts.user_id = users.id) WHERE users.id = ${+id}`,
     (err, results) => {
       if (!err) {
-        connection.end();
         res.json(results);
       } else {
-        connection.end();
+
         res.status(500).json({ err });
       }
     }

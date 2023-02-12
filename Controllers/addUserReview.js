@@ -19,10 +19,8 @@ export const addUserReview = (req, res) => {
     (err, results) => {
       if (!err) {
         res.json({ isAdded: true });
-        connection.end();
       } else {
         res.status(500).json({ err });
-        connection.end();
       }
     }
   );

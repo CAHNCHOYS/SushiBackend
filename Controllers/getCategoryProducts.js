@@ -15,10 +15,8 @@ export const getCategoryProducts = (req, res) => {
     `,
     (err, results) => {
       if (!err) {
-        connection.end();
         res.json(results);
       } else {
-        connection.end();
         console.log(err);
         res.status(500).json({ err });
       }

@@ -7,12 +7,8 @@ export const updateUserData = (req, res) => {
     `UPDATE users set name = '${name}', phone = '${phone}', email = '${email}' WHERE id = ${id} `,
     (err, results) => {
       if (!err) {
-        connection.end();
         res.json({ isUpdated: true });
-      } else {
-        connection.end();
-        res.status(500).json({ err });
-      }
+      } else res.status(500).json({ err });
     }
   );
 };
