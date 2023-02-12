@@ -3,7 +3,9 @@ import cors from "cors";
 import path from "path";
 
 import router from "./Routes/routes.js";
-import connection from "./Database/connection.js";
+
+
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -33,11 +35,7 @@ app.get("/api/w", (req, res) => {
 
 
 app.listen(PORT, () => {
-  connection.connect((err)=>{
-    if(!err){
-      console.log("database started");
-    }
-  })
+ 
   
   console.log("Server is running on Port: " + PORT + "...");
 });

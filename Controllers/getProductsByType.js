@@ -1,7 +1,7 @@
 import connection from "../Database/connection.js";
 
 export const getProductsByType = (req, res) => {
-  
+
 
   const type = req.params.type;
   connection.query(
@@ -14,6 +14,7 @@ export const getProductsByType = (req, res) => {
     (err, results) => {
       if (!err) {
         res.json(results);
+        
       } else {
         console.log(err);
         res.status(500).json({ err });
@@ -21,5 +22,5 @@ export const getProductsByType = (req, res) => {
     }
   );
 
-  
+
 };
