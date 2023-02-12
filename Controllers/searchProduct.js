@@ -25,9 +25,10 @@ export const searchProduct = (req, res) => {
 
         res.json(filteredByCategories);
 
-
+        connection.end();
 
       } else {
+        connection.end();
         console.log(err);
         res.status(500).json({ err });
       }

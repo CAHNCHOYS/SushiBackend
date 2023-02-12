@@ -8,8 +8,10 @@ export const deleteCartProduct = (req, res) => {
     `DELETE FROM cartproducts WHERE user_id = ${+user_id} AND product_id = ${+product_id}`,
     (err, results) => {
       if (!err) {
+        connection.end();
         res.json({ isRemoved: true });
       } else {
+        connection.end();
         console.log(err);
         res.status(500).json({ err });
       }
