@@ -20,6 +20,9 @@ import { updateUserData } from "../Controllers/updateUserData.js";
 //------------------------
 
 const JWT_KEY = "SUSHIAPP";
+
+
+
 const router = Router();
 
 router.get("/users", (req, res) => {

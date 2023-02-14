@@ -24,13 +24,11 @@ app.use(express.static(path.resolve(__dirname, "Images")));
 
 
 app.get("/", (req, res) => {
-  console.log("HOEM");
-  res.send("WE ARE ON HOME PAGE");
+  console.log("HOME");
+  res.send("HOME PAGE");
 });
 
-app.get("/api/w", (req, res) => {
-  res.json({ done: true });
-});
+
 
 
 
