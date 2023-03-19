@@ -25,7 +25,7 @@ app.use(express.static(path.resolve(__dirname, "Images")));
 
 app.get("/", (req, res) => {
   console.log("HOME");
-  res.send("HOME PAGE");
+  res.send("Backend Sushi App");
 });
 
 

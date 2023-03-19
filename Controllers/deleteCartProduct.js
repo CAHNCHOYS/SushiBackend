@@ -16,5 +16,5 @@ export const deleteCartProduct = (req, res) => {
     }
   );
 
-  //connection.query("DELETE FROM CartProducts WHERE");
+ 
 };
