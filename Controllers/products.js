@@ -9,7 +9,7 @@ export const getUserCartProducts = (req, res) => {
       if (!err) {
         res.json(results);
       } else {
-        res.status(500).json({ err });
+        res.status(500).json({ err: err.message });
       }
     }
   );
@@ -30,7 +30,7 @@ export const getSingleProduct = (req, res) => {
         res.json(results[0] || null);
       } else {
         console.log(err);
-        res.status(500).json({ err });
+        res.status(500).json({ err: err.message });
       }
     }
   );
@@ -62,7 +62,7 @@ export const searchProduct = (req, res) => {
         res.json(filteredByCategories);
       } else {
         console.log(err);
-        res.status(500).json({ err });
+        res.status(500).json({ err: err.message });
       }
     }
   );
@@ -84,7 +84,7 @@ export const getCategoryProducts = (req, res) => {
         res.json(results);
       } else {
         console.log(err);
-        res.status(500).json({ err });
+        res.status(500).json({ err: err.message });
       }
     }
   );
@@ -101,7 +101,7 @@ export const deleteCartProduct = (req, res) => {
         res.json({ isRemoved: true });
       } else {
         console.log(err);
-        res.status(500).json({ err });
+        res.status(500).json({ err: err.message });
       }
     }
   );
@@ -127,14 +127,14 @@ export const addCartProduct = (req, res) => {
                 res.json({ isAdded: true });
               } else {
                 console.log(err);
-                res.status(500).json({ err });
+                res.status(500).json({err: err.message });
               }
             }
           );
         }
       } else {
         console.log(err);
-        res.status(500).json({ err });
+        res.status(500).json({ err: err.message });
       }
     }
   );
@@ -153,7 +153,7 @@ export const getProductsByType = (req, res) => {
         res.json(results);
       } else {
         console.log(err);
-        res.status(500).json({ err });
+        res.status(500).json({ err: err.message });
       }
     }
   );

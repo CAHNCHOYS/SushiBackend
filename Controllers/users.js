@@ -27,7 +27,7 @@ export const login = (req, res) => {
         }
       } else {
         console.log(err);
-        res.status(500).json({ err });
+        res.status(500).json({ err: err.message });
       }
     }
   );
@@ -46,7 +46,7 @@ export const register = (req, res) => {
           (err, results) => {
             if (err) {
               console.log(err);
-              res.status(500).json({ err });
+              res.status(500).json({ err: err.message });
             } else res.status(200).json({ isSuccess: true });
           }
         );
@@ -56,7 +56,7 @@ export const register = (req, res) => {
         });
       } else if (err) {
         console.log(err);
-        res.status(500).json({ err });
+        res.status(500).json({ err: err.message });
       }
     }
   );

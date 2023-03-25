@@ -6,7 +6,7 @@ export const getAllReviews = (req, res) => {
     (err, results) => {
       if (!err) {
         res.json(results);
-      } else res.status(500).json({ err });
+      } else res.status(500).json({err: err.message });
     }
   );
 };
@@ -31,7 +31,7 @@ export const addUserReview = (req, res) => {
       if (!err) {
         res.json({ isAdded: true });
       } else {
-        res.status(500).json({ err });
+        res.status(500).json({ err: err.message });
       }
     }
   );
