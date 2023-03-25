@@ -27,7 +27,7 @@ export const getSingleProduct = (req, res) => {
      `,
     (err, results) => {
       if (!err) {
-        res.json(results);
+        res.json(results[0] || null);
       } else {
         console.log(err);
         res.status(500).json({ err });
@@ -118,7 +118,7 @@ export const addCartProduct = (req, res) => {
       if (!err) {
         console.log(results);
         if (results.length > 0) {
-          res.json({ err: "Товар уже  находится  в корзине !" });
+          res.status(400).json({ err: "Товар уже  находится  в корзине !" });
         } else {
           connection.query(
             `INSERT INTO cartproducts (product_id, user_id, count) VALUES (${product_id},${user_id},${count})`,
@@ -146,7 +146,6 @@ export const getProductsByType = (req, res) => {
     `SELECT product_id, products.name, products.Price,  products.image, products.textSize, oldPrice, categories.id as category_id FROM
         products INNER JOIN categories ON products.category_id = categories.id
         WHERE ${type} != 0 LIMIT 10
-        
       
       `,
     (err, results) => {
@@ -159,5 +158,3 @@ export const getProductsByType = (req, res) => {
     }
   );
 };
-
-

@@ -15,19 +15,19 @@ export const login = (req, res) => {
           console.log(user);
 
           console.log(JWT_KEY);
-          const token = jwt.sign({...user}, JWT_KEY, { expiresIn: "2h" });
+          const token = jwt.sign({ id: user.id }, JWT_KEY, { expiresIn: "2h" });
 
           console.log(token);
 
           res.json({ user, token });
         } else {
-          res.status(409).json({
+          res.status(400).json({
             err: "Неверный логин или пароль! Повторите попытку еще раз!",
           });
         }
       } else {
         console.log(err);
-        res.json({ err });
+        res.status(500).json({ err });
       }
     }
   );
@@ -63,21 +63,26 @@ export const register = (req, res) => {
 };
 
 export const verifyToken = (req, res) => {
-  const { token } = req.body;
+  const token = req.headers["authorization"].split(" ")[1];
   console.log(token);
 
-  console.log(JWT_KEY);
   jwt.verify(token, JWT_KEY, function (err, decoded) {
     if (err) {
       console.log("Ошибка", err);
-      res.json({ isInvalidToken: true });
+      res.status(401).json({ err: err });
     } else {
-      console.log("Verified");
-      res.json({
-        user: {
-          ...decoded,
-        },
-      });
+      console.log(decoded);
+      connection.query(
+        `SELECT id, email,  city, name, phone, password from users WHERE id = ${decoded.id}`,
+        (err, results) => {
+          if (!err) {
+            res.json(results[0]);
+          } else {
+            console.log(err);
+            res.status(500).json({ err });
+          }
+        }
+      );
     }
   });
 };

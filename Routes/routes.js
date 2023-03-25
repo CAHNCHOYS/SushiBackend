@@ -25,8 +25,9 @@ router.get("/users", (req, res) => {
 router.post("/api/register", UserController.register);
 router.post("/api/login", UserController.login);
 
-router.post("/api/verify", UserController.verifyToken);
 
+
+router.get("/api/verify", UserController.verifyToken);
 router.get("/api/productsByType/:type", ProductController.getProductsByType);
 router.get("/api/products/:name/:id", ProductController.getSingleProduct);
 router.get("/api/categories/:category/:limit", ProductController.getCategoryProducts);
